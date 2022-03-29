@@ -14,6 +14,7 @@ document.addEventListener('mouseup', () => {
       // range.surroundContents(newNode);
       
       target_value =  `Selected text is in the range ${range.startOffset}:${range.endOffset} `;
+      // target_value = 
     }
   }
   

@@ -17,19 +17,30 @@ app.layout = html.Div(id='wrapper', children=[
 
 @app.callback(
     dash.dependencies.Output('callback-result', 'children'),
-    [dash.dependencies.Input('submit', 'n_clicks')],
+    dash.dependencies.Output('selection-container', 'children'),
+    dash.dependencies.Input('submit', 'n_clicks'),
     [
+        dash.dependencies.State('selection-container', 'children'),
         dash.dependencies.State('selection-text', 'value'),
         dash.dependencies.State('selection-start', 'value'),
         dash.dependencies.State('selection-end', 'value'),
     ],
         )
-def update_output(n_clicks, text, start, end):
-    if text:
+def update_output(n_clicks, raw_text, res_text, start, end):
+    if res_text:
         # res = html.Span("test") + "<mark>" + "marked text" + "</mark>"
         # return res
-        return html.Mark(html.Span(f'Selected string: "{text}"', style=dict(color='green')))
-    return html.Span('Nothing selected', style=dict(color='red'))
+
+        startint = int(start)
+        endint = int(end)
+        before = raw_text[0:startint]
+        highlight = raw_text[startint:endint]
+        after = raw_text[endint:len(raw_text)]
+        highlight_text = [before, html.Mark(highlight), after]
+
+        return raw_text, highlight_text
+        # return html.Mark(html.Span(f'Selected string: "{text}"', style=dict(color='green')))
+    return html.Span('Nothing selected', style=dict(color='red')), dash.no_update
 
 
 if __name__ == '__main__':
