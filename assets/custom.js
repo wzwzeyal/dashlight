@@ -28,6 +28,8 @@ document.addEventListener('mouseup', e => {
       var raw_text = selection_container_element.innerText
 
       selection_container_element.innerHTML = 
+
+      // <p>Here is the <mark style="color: white; background-color:red"> searched query </mark> </p>
       raw_text.slice(0, range.startOffset) + "<mark>" + sel_str + "</mark>" + raw_text.slice(range.endOffset, raw_text.length)
 
       // Way to set value of React input
