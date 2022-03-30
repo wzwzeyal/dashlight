@@ -1,40 +1,60 @@
+var nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+var ev2 = new Event('input', {bubbles: true});
+
+var first_time = true;
+var raw_text = ''
+
 document.addEventListener('mouseup', () => {
+
   var sel = window.getSelection();
+  
   var sel_str = sel.toString();
   var target_value = '';
-  var range = sel.getRangeAt(0);
+  
 
   if (sel_str.length > 0) {
     var pid = sel.focusNode.parentNode.id;
-    if (pid == 'selection-container') {
-      // target_value = sel_str;
+    if (pid == 'selection-container')
+    {
       
-      
-      // var newNode = document.createElement("mark");
-      // range.surroundContents(newNode);
-      
-      target_value =  `Selected text is in the range ${range.startOffset}:${range.endOffset} `;
-      // target_value = 
+      var range = sel.getRangeAt(0);
+      target_value = `${range.startOffset}:${range.endOffset} `;
+
+      var selection_container_element =  document.getElementById('selection-container');
+
+      // Way to set value of React input
+      var text_element = document.getElementById('selection-text');
+      nativeInputValueSetter.call(text_element, target_value);
+      text_element.dispatchEvent(ev2);
+
+      var start_element = document.getElementById('selection-start');
+      nativeInputValueSetter.call(start_element, range.startOffset);
+      start_element.dispatchEvent(ev2);
+
+      var end_element = document.getElementById('selection-end');
+      nativeInputValueSetter.call(end_element, range.endOffset);
+      end_element.dispatchEvent(ev2);
+
+      var raw_text_element = document.getElementById('raw_text');
+      nativeInputValueSetter.call(raw_text_element, selection_container_element.innerText);
+      raw_text_element.dispatchEvent(ev2);     
     }
   }
+});
+
+document.addEventListener('mousedown', e => {
   
-  // Way to set value of React input
-  var text_element = document.getElementById('selection-text');
-  var nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-  nativeInputValueSetter.call(text_element, target_value);
-  var ev2 = new Event('input', {bubbles: true});
-  text_element.dispatchEvent(ev2);
+  
+  if(e.target.id == 'selection-container')
+  //if (sel.focusNode.parentNode.id == 'selection-container')
+  {
+    alert(e.target.id)
+    var selection_container_element =  document.getElementById('selection-container');
 
-  var start_element = document.getElementById('selection-start');
-  var nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-  nativeInputValueSetter.call(start_element, range.startOffset);
-  var ev2 = new Event('input', {bubbles: true});
-  start_element.dispatchEvent(ev2);
-
-  var end_element = document.getElementById('selection-end');
-  var nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-  nativeInputValueSetter.call(end_element, range.endOffset);
-  var ev2 = new Event('input', {bubbles: true});
-  end_element.dispatchEvent(ev2);
+    var raw_text_element = document.getElementById('raw_text2');
+    nativeInputValueSetter.call(raw_text_element, selection_container_element.innerText);
+    raw_text_element.dispatchEvent(ev2);   
+    alert(selection_container_element.innerText)
+  }
 
 });
