@@ -21,42 +21,17 @@ app.layout = html.Div(id='wrapper', children=[
 
 @app.callback(
     Output('callback-result', 'children'),
-    # dash.dependencies.Output('highlight-container', 'children'),
-    # Output('selection-container', 'children'),
     [
         Input('submit', 'n_clicks'),
-        # Input('raw_text2', 'value'),
     ],
     [
-        State('raw_text', 'value'),
-        State('selection-text', 'value'),
-        State('selection-start', 'value'),
-        State('selection-end', 'value'),
+        State('selection-text', 'value'),        
     ],
         )
-def update_output(n_clicks, raw_text, res_text, start, end):
-    if res_text:
-        startint = int(start)
-        endint = int(end)
-        before = raw_text[0:startint]
-        highlight = html.Mark(raw_text[startint:endint])
-        # highlight = html.Span(raw_text[startint:endint])
-
-        # highlight = raw_text[startint:endint]
-        after = raw_text[endint:len(raw_text)]
-        highlight_text = [before, highlight, after]
-        print(highlight_text)
-        return res_text #, highlight_text
-        # return html.Mark(html.Span(f'Selected string: "{text}"', style=dict(color='green')))
-    return html.Span('Nothing selected', style=dict(color='red'))# , no_update
-
-
-# @app.callback(
-#     dash.dependencies.Output('highlight-container', 'children'),
-#     dash.dependencies.Input('raw_text2', 'value'),
-#         )
-# def clear_text(raw_text2):
-#     return raw_text2
+def update_output(n_clicks, selection_text):
+    if selection_text:
+        return selection_text
+    return html.Span('Nothing selected', style=dict(color='red'))
 
 if __name__ == '__main__':
     app.run_server(debug=True)

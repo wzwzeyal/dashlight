@@ -27,27 +27,21 @@ document.addEventListener('mouseup', e => {
 
       var raw_text = selection_container_element.innerText
 
-      selection_container_element.innerHTML = 
+      var forecolor = "yellow";
+      var backgroundcolor = "blue";
 
       // <p>Here is the <mark style="color: white; background-color:red"> searched query </mark> </p>
-      raw_text.slice(0, range.startOffset) + "<mark>" + sel_str + "</mark>" + raw_text.slice(range.endOffset, raw_text.length)
+
+      selection_container_element.innerHTML = 
+        raw_text.slice(0, range.startOffset) + 
+        "<mark style=\"color: " + forecolor  + ";" + "background-color:" + backgroundcolor + "\">" + 
+        sel_str + 
+        "</mark>" + raw_text.slice(range.endOffset, raw_text.length)
 
       // Way to set value of React input
       var text_element = document.getElementById('selection-text');
       nativeInputValueSetter.call(text_element, target_value);
       text_element.dispatchEvent(ev2);
-
-      var start_element = document.getElementById('selection-start');
-      nativeInputValueSetter.call(start_element, range.startOffset);
-      start_element.dispatchEvent(ev2);
-
-      var end_element = document.getElementById('selection-end');
-      nativeInputValueSetter.call(end_element, range.endOffset);
-      end_element.dispatchEvent(ev2);
-
-      var raw_text_element = document.getElementById('raw_text');
-      nativeInputValueSetter.call(raw_text_element, selection_container_element.innerText);
-      raw_text_element.dispatchEvent(ev2);     
     }
   }
   else
@@ -79,7 +73,7 @@ document.addEventListener('mousedown', e => {
  
 
     var text_element = document.getElementById('selection-text');
-    nativeInputValueSetter.call(text_element, "");
+    nativeInputValueSetter.call(text_element, "Nothing selected");
     text_element.dispatchEvent(ev2);
   }
   console.log("addEventListener - mousedown - stop")
